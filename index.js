@@ -1,7 +1,7 @@
 const algoliasearch = require('algoliasearch');
 const dotenv = require('dotenv');
 const firebase = require('firebase-admin');
-var serviceAccount = require("/mnt/c/Users/Nathan/Documents/Developer/ScranPlanAlgolia/AccountKey.json");
+var serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT);
 
 
 // load values from the .env file in this directory into process.env
@@ -28,12 +28,12 @@ const algolia = algoliasearch(
   process.env.ALGOLIA_API_KEY
 );
 
-const index = algolia.initIndex(process.env.ALGOLIA_INDEX_NAME);
+const index = algolia.initIndex(process.env.ALGOLIA_INDEX_NAME_R);
 
-var docRef = db.collection("recipes");
+var docRef = db.collection(process.env.FIREBASE_R);
 const records = [];
 
-db.collection("recipes").get()
+db.collection(process.env.FIREBASE_R).get()
     .then((snapshot) => {
         snapshot.forEach((doc) => {
             // get the key and data from the snapshot

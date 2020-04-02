@@ -1,0 +1,17 @@
+{
+  "name": "scranplanaloglia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "algoliasearch": "^4.1.0",
+    "dotenv": "^8.2.0",
+    "firebase": "^7.13.1",
+    "firebase-admin": "^8.10.0"
+  }
+}

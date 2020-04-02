@@ -1,0 +1,4 @@
+accountkey.json
+/node_modules
+.env
+npm-debug.log

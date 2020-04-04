@@ -31,7 +31,7 @@ exports.onNoteCreatedRecipes = functions.firestore.document('recipes/{noteId}').
 
 exports.onNoteUpdatedRecipes = functions.firestore.document('recipes/{noteId}').onUpdate((snap, context) => {
   // Get the note document
-  const note = snap.data();
+  const note = snap.after.data();
 
   // Add an 'objectID' field which Algolia requires
   note.objectID = context.params.noteId;
@@ -69,7 +69,7 @@ exports.onNoteCreatedPosts = functions.firestore.document('posts/{noteId}').onCr
 
 exports.onNoteUpdatedPosts = functions.firestore.document('posts/{noteId}').onUpdate((snap, context) => {
   // Get the note document
-  const note = snap.data();
+  const note = snap.after.data();
 
   // Add an 'objectID' field which Algolia requires
   note.objectID = context.params.noteId;
@@ -94,12 +94,14 @@ exports.onNoteDeletePosts = functions.firestore.document('posts/{noteId}').onDel
 
 // Update the search index every time a user is written.
 exports.onUserCreated = functions.firestore.document('users/{noteId}').onCreate((snap, context) => {
+  
+  const note = snap.data();
   // Get the note document
   const userProfile = {
     objectID: context.params.noteId,
-    displayName: snap.get("displayName"),
-    email: snap.get("email"),
-    imageURL: snap.get("imageURL")
+    displayName: note['displayName'],
+    email: note['email'],
+    imageURL: note['imageURL']
 };
 
   // Add an 'objectID' field which Algolia requires
@@ -110,12 +112,13 @@ exports.onUserCreated = functions.firestore.document('users/{noteId}').onCreate(
 });
 
 exports.onUserUpdated = functions.firestore.document('users/{noteId}').onUpdate((snap, context) => {
+const note = snap.after.data();
 // Get the note document
 const userProfile = {
   objectID: context.params.noteId,
-  displayName: snap.get("displayName"),
-  email: snap.get("email"),
-  imageURL: snap.get("imageURL")
+  displayName: note['displayName'],
+  email: note['email'],
+  imageURL: note['imageURL']
 };
 
 // Add an 'objectID' field which Algolia requires

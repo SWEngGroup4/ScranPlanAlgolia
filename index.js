@@ -1,7 +1,7 @@
 const algoliasearch = require('algoliasearch');
 const dotenv = require('dotenv');
 const firebase = require('firebase-admin');
-var serviceAccount = require(process.env.FIREBASE_SERVICE_ACCOUNT);
+var serviceAccount = require('/mnt/c/Users/Nathan/Documents/Developer/ScranPlanAlgolia/AccountKey.json');
 
 
 // load values from the .env file in this directory into process.env
@@ -28,22 +28,27 @@ const algolia = algoliasearch(
   process.env.ALGOLIA_API_KEY
 );
 
-const index = algolia.initIndex(process.env.ALGOLIA_INDEX_NAME_R);
+const index = algolia.initIndex(process.env.ALGOLIA_INDEX_NAME_U);
 
-var docRef = db.collection(process.env.FIREBASE_R);
+var docRef = db.collection(process.env.FIREBASE_U);
 const records = [];
 
-db.collection(process.env.FIREBASE_R).get()
+db.collection(process.env.FIREBASE_U).get()
     .then((snapshot) => {
         snapshot.forEach((doc) => {
             // get the key and data from the snapshot
             const childKey = doc.id;
-            const childData = doc.data();
+            const childData = {
+                objectID: doc.id,
+                displayName: doc.get("displayName"),
+                email: doc.get("email"),
+                imageURL: doc.get("imageURL")
+            };
             // We set the Algolia objectID as the Firebase .key
-            childData.objectID = childKey;
+            // childData.objectID = childKey;
             // Add object for indexing
             records.push(childData);
-            console.log(doc.id, '=>', doc.data());
+            console.log(doc.id, '=>', childData);
         });
         // Add or update new objects
         index.saveObjects(records).then(() => {
